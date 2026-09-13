@@ -6,42 +6,72 @@
 <title>Food Planner</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#7b8496;--accent:#6c63ff;--accent2:#8d7cff;--line:#e9ecf3}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-.app{max-width:560px;margin:auto;padding:18px 16px 28px}.hero{padding:24px 4px 18px}.eyebrow{font-size:13px;color:var(--accent);font-weight:800;letter-spacing:.08em;text-transform:uppercase}.title{font-size:32px;font-weight:850;margin:7px 0}.sub{color:var(--muted);line-height:1.45;margin:0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:17px;min-height:126px;box-shadow:0 7px 22px rgba(30,40,70,.06);text-align:left}.card.big{grid-column:1/-1;min-height:112px}.icon{font-size:27px}.ct{font-weight:800;font-size:17px;margin-top:10px}.cm{color:var(--muted);font-size:13px;margin-top:5px;line-height:1.35}.primary{margin-top:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:0;border-radius:18px;padding:16px;width:100%;font-size:16px;font-weight:800}.section{margin:22px 0 11px;font-size:15px;font-weight:850}.profile{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;gap:12px;align-items:center}.avatar{width:44px;height:44px;border-radius:14px;background:#eee9ff;display:grid;place-items:center;font-size:22px}.small{font-size:12px;color:var(--muted)}button{font:inherit;cursor:pointer}.footer{text-align:center;color:var(--muted);font-size:11px;padding:22px 0 0}
+:root{--bg:#f6f7fb;--card:#fff;--text:#172033;--muted:#7b8496;--accent:#6c63ff;--accent2:#8d7cff;--line:#e9ecf3;--ok:#2fa66a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{padding-bottom:78px}.app{max-width:560px;margin:auto;padding:16px}.top{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 18px}.brand{font-weight:900;font-size:18px}.hello{font-size:12px;color:var(--muted)}
+.screen{display:none}.screen.active{display:block}.hero{padding:8px 4px 18px}.eyebrow{font-size:12px;color:var(--accent);font-weight:900;letter-spacing:.1em}.title{font-size:30px;font-weight:900;margin:6px 0}.sub{color:var(--muted);line-height:1.45;margin:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:17px;min-height:130px;box-shadow:0 7px 22px rgba(30,40,70,.06);text-align:left;width:100%;color:var(--text)}.card.big{grid-column:1/-1;min-height:112px}.icon{font-size:28px}.ct{font-weight:850;font-size:17px;margin-top:9px}.cm{color:var(--muted);font-size:13px;margin-top:5px;line-height:1.35}
+.section{font-weight:900;font-size:16px;margin:20px 2px 11px}.meal{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin:10px 0;box-shadow:0 6px 18px rgba(30,40,70,.05)}.mealhead{display:flex;justify-content:space-between;gap:8px;font-weight:850}.portion{color:var(--muted);font-size:13px;line-height:1.4;margin-top:7px}.badge{font-size:11px;padding:5px 8px;border-radius:10px;background:#eeeaff;color:var(--accent);font-weight:800;white-space:nowrap}
+.primary,.secondary{border:0;border-radius:17px;padding:15px;width:100%;font-size:15px;font-weight:850;margin-top:12px}.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white}.secondary{background:#fff;border:1px solid var(--line);color:var(--text)}.back{border:0;background:transparent;padding:8px 0;color:var(--accent);font-weight:800;font-size:14px}.shopping{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:5px 16px}.item{display:flex;align-items:center;gap:11px;padding:14px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.check{width:20px;height:20px;border:2px solid #cfd4df;border-radius:7px}.weekday{font-weight:900;margin-top:18px}.info{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;line-height:1.5;color:var(--muted)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);border-top:1px solid var(--line);backdrop-filter:blur(12px);display:flex;justify-content:center;z-index:10}.navin{width:min(560px,100%);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}.nav button{border:0;background:transparent;color:var(--muted);font-size:11px;font-weight:800;padding:7px 2px}.nav button.active{color:var(--accent)}.navico{display:block;font-size:20px;margin-bottom:2px}.footer{text-align:center;color:var(--muted);font-size:11px;padding:22px 0}
 </style>
 </head>
 <body>
 <div class="app">
-  <section class="hero">
-    <div class="eyebrow">FOOD PLANNER</div>
-    <div class="title">Твой рацион проще.</div>
-    <p class="sub">Планируй питание, смотри блюда на сегодня и неделю, собирай покупки и используй ИИ-помощника.</p>
+  <div class="top"><div><div class="brand">🥗 Food Planner</div><div class="hello" id="hello">Персональный рацион</div></div><div>✨</div></div>
+
+  <section id="home" class="screen active">
+    <div class="hero"><div class="eyebrow">FOOD PLANNER</div><div class="title">Питание проще.</div><p class="sub">Смотри рацион, планируй неделю, собирай покупки и пользуйся ИИ — всё в одном Mini App.</p></div>
+    <div class="section">Мой Food Planner</div>
+    <div class="grid">
+      <button class="card big" onclick="go('today')"><div class="icon">📅</div><div class="ct">Рацион на сегодня</div><div class="cm">Завтрак, перекусы, обед и ужин</div></button>
+      <button class="card" onclick="go('week')"><div class="icon">📆</div><div class="ct">На неделю</div><div class="cm">План на 7 дней</div></button>
+      <button class="card" onclick="go('shopping')"><div class="icon">🛒</div><div class="ct">Покупки</div><div class="cm">Список продуктов</div></button>
+      <button class="card" onclick="go('replace')"><div class="icon">🔄</div><div class="ct">Заменить</div><div class="cm">Попросить бота заменить блюдо</div></button>
+      <button class="card" onclick="go('favorites')"><div class="icon">❤️</div><div class="ct">Избранное</div><div class="cm">Любимые блюда</div></button>
+      <button class="card" onclick="go('ai')"><div class="icon">🤖</div><div class="ct">Спросить ИИ</div><div class="cm">Рецепты и идеи</div></button>
+    </div>
+    <button class="primary" onclick="send('build')">🍽️ Составить новый рацион в боте</button>
+    <div class="footer">Ориентировочные порции • без подсчёта калорий</div>
   </section>
 
-  <div class="profile"><div class="avatar">🥗</div><div><b>Добро пожаловать!</b><div class="small">Все основные действия доступны прямо здесь.</div></div></div>
+  <section id="today" class="screen">
+    <button class="back" onclick="go('home')">← Главная</button><div class="title">📅 Сегодня</div>
+    <p class="sub">Здесь будет твой сохранённый рацион. Для получения актуального плана открой его в Telegram.</p>
+    <div class="meal"><div class="mealhead"><span>🍳 Завтрак</span><span class="badge">утро</span></div><div class="portion">Овсянка с бананом и ягодами<br>⚖️ Ориентировочная порция: овсянка 50 г (сухая) + банан 1 шт + ягоды 80 г</div></div>
+    <div class="meal"><div class="mealhead"><span>🍎 Перекус</span><span class="badge">днём</span></div><div class="portion">Яблоко + натуральный йогурт<br>⚖️ Фрукт 1 шт + йогурт 150 г</div></div>
+    <div class="meal"><div class="mealhead"><span>🍲 Обед</span><span class="badge">день</span></div><div class="portion">Гречка + курица + овощи<br>⚖️ Гречка 70 г (сухая) + курица 120 г + овощи 200 г</div></div>
+    <div class="meal"><div class="mealhead"><span>🍝 Ужин</span><span class="badge">вечер</span></div><div class="portion">Макароны + рыба + овощи<br>⚖️ Макароны 70 г (сухие) + рыба 120 г + овощи 200 г</div></div>
+    <div class="info">ℹ️ Пример отображения. Точный сохранённый план хранится у бота, поэтому кнопка ниже открывает его сообщение в Telegram.</div>
+    <button class="primary" onclick="send('today')">Открыть мой рацион в Telegram</button>
+  </section>
 
-  <div class="section">Мой Food Planner</div>
-  <div class="grid">
-    <button class="card big" onclick="send('today')"><div class="icon">📅</div><div class="ct">Рацион на сегодня</div><div class="cm">Открыть готовый план в Telegram</div></button>
-    <button class="card" onclick="send('week')"><div class="icon">📆</div><div class="ct">На неделю</div><div class="cm">План на 7 дней</div></button>
-    <button class="card" onclick="send('shopping')"><div class="icon">🛒</div><div class="ct">Покупки</div><div class="cm">Список продуктов</div></button>
-    <button class="card" onclick="send('replace')"><div class="icon">🔄</div><div class="ct">Заменить</div><div class="cm">Подобрать другое блюдо</div></button>
-    <button class="card" onclick="send('favorites')"><div class="icon">❤️</div><div class="ct">Избранное</div><div class="cm">Любимые блюда</div></button>
-    <button class="card" onclick="send('ai')"><div class="icon">🤖</div><div class="ct">Спросить ИИ</div><div class="cm">Рецепты и идеи</div></button>
-  </div>
+  <section id="week" class="screen">
+    <button class="back" onclick="go('home')">← Главная</button><div class="title">📆 Неделя</div><p class="sub">Удобный обзор недели. Актуальный план можно запросить у бота.</p>
+    <div class="weekday">Понедельник</div><div class="meal">🍳 Завтрак · Овсянка с бананом и ягодами<br><span class="portion">🍲 Обед · Гречка + курица + овощи<br>🍝 Ужин · Макароны + рыба + овощи</span></div>
+    <div class="weekday">Вторник</div><div class="meal">🍳 Завтрак · Гречневая каша с фруктом<br><span class="portion">🍲 Обед · Рис + рыба + овощной салат<br>🍝 Ужин · Картофель + курица + овощи</span></div>
+    <div class="weekday">Среда</div><div class="meal">🍳 Завтрак · Тосты с авокадо и овощами<br><span class="portion">🍲 Обед · Чечевица + рис + овощи<br>🍝 Ужин · Омлет + овощи + хлеб</span></div>
+    <button class="primary" onclick="send('week')">Открыть мой план недели в Telegram</button>
+  </section>
 
-  <button class="primary" onclick="send('build')">🍽️ Составить новый рацион</button>
-  <div class="footer">Food Planner • рацион без подсчёта калорий</div>
+  <section id="shopping" class="screen">
+    <button class="back" onclick="go('home')">← Главная</button><div class="title">🛒 Покупки</div><p class="sub">Список продуктов для текущего рациона.</p>
+    <div class="shopping"><div class="item"><span class="check"></span> Овсянка</div><div class="item"><span class="check"></span> Бананы</div><div class="item"><span class="check"></span> Ягоды</div><div class="item"><span class="check"></span> Гречка</div><div class="item"><span class="check"></span> Курица</div><div class="item"><span class="check"></span> Овощи</div><div class="item"><span class="check"></span> Рыба</div><div class="item"><span class="check"></span> Йогурт</div></div>
+    <button class="primary" onclick="send('shopping')">Открыть мой список в Telegram</button>
+  </section>
+
+  <section id="replace" class="screen"><button class="back" onclick="go('home')">← Главная</button><div class="title">🔄 Замена блюда</div><div class="info">Нажми кнопку — бот выберет безопасную замену с учётом твоего профиля и ограничений.</div><button class="primary" onclick="send('replace')">🔄 Заменить блюдо в боте</button></section>
+  <section id="favorites" class="screen"><button class="back" onclick="go('home')">← Главная</button><div class="title">❤️ Избранное</div><div class="info">Сохранённые блюда пока показываются в Telegram. Следующим этапом добавим полноценное сохранение прямо из Mini App.</div><button class="primary" onclick="send('favorites')">❤️ Открыть избранное в Telegram</button></section>
+  <section id="ai" class="screen"><button class="back" onclick="go('home')">← Главная</button><div class="title">🤖 ИИ-помощник</div><div class="info">Можно спросить про рецепт, идеи из имеющихся продуктов или безопасную замену блюда. ИИ не используется для подсчёта калорий.</div><button class="primary" onclick="send('ai')">🤖 Открыть ИИ в боте</button></section>
 </div>
+
+<div class="nav"><div class="navin"><button id="n-home" class="active" onclick="go('home')"><span class="navico">🏠</span>Главная</button><button id="n-today" onclick="go('today')"><span class="navico">📅</span>Сегодня</button><button id="n-week" onclick="go('week')"><span class="navico">📆</span>Неделя</button><button id="n-shopping" onclick="go('shopping')"><span class="navico">🛒</span>Покупки</button></div></div>
 <script>
 const tg=window.Telegram?.WebApp;
-if(tg){tg.ready();tg.expand();}
-function send(action){
-  if(tg){tg.sendData(JSON.stringify({action}));}
-  else{alert('Открой Mini App внутри Telegram.');}
-}
+if(tg){tg.ready();tg.expand();if(tg.initDataUnsafe?.user?.first_name)document.getElementById('hello').textContent='Привет, '+tg.initDataUnsafe.user.first_name+' 👋';}
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));const n=document.getElementById('n-'+id);if(n)n.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function send(action){if(tg){tg.sendData(JSON.stringify({action}));}else{alert('Открой Mini App внутри Telegram.');}}
 </script>
 </body>
 </html>
+
